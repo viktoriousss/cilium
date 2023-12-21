@@ -42,7 +42,8 @@ func (m *Map[K, V]) Load(key K) (value V, ok bool) {
 // The loaded result is true if the value was loaded, false if stored.
 func (m *Map[K, V]) LoadOrStore(key K, value V) (actual V, loaded bool) {
 	val, loaded := (*sync.Map)(m).LoadOrStore(key, value)
-	return val.(V), loaded
+	v, _ := val.(V)
+	return v, loaded
 }
 
 // LoadAndDelete deletes the value for a key, returning the previous value if any

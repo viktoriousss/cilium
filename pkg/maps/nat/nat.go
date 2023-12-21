@@ -140,7 +140,7 @@ func DumpEntriesWithTimeDiff(m NatMap, clockSource *models.ClockSource) (string,
 	}
 
 	cb := func(k bpf.MapKey, v bpf.MapValue) {
-		key := k.(NatKey)
+		key, _ := k.(NatKey)
 		if !key.ToHost().Dump(&sb, false) {
 			return
 		}
