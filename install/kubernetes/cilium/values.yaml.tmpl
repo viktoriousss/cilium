@@ -1,9 +1,9 @@
 
-# upgradeCompatibility helps users upgrading to ensure that the configMap for
+# -- upgradeCompatibility helps users upgrading to ensure that the configMap for
 # Cilium will not change critical values to ensure continued operation
 # This flag is not required for new installations.
-# For example: 1.7, 1.8, 1.9
-# upgradeCompatibility: '1.8'
+# For example: '1.7', '1.8', '1.9'
+upgradeCompatibility: null
 
 debug:
   # -- Enable debug logging
@@ -189,12 +189,12 @@ extraEnv: []
 
 # -- Additional agent hostPath mounts.
 extraHostPathMounts: []
-  # - name: host-mnt-data
-  #   mountPath: /host/mnt/data
-  #   hostPath: /mnt/data
-  #   hostPathType: Directory
-  #   readOnly: true
-  #   mountPropagation: HostToContainer
+# - name: host-mnt-data
+#   mountPath: /host/mnt/data
+#   hostPath: /mnt/data
+#   hostPathType: Directory
+#   readOnly: true
+#   mountPropagation: HostToContainer
 
 # -- Additional agent volumes.
 extraVolumes: []
@@ -226,12 +226,12 @@ podLabels: {}
 # -- Agent resource limits & requests
 # ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 resources: {}
-  # limits:
-  #   cpu: 4000m
-  #   memory: 4Gi
-  # requests:
-  #   cpu: 100m
-  #   memory: 512Mi
+#   limits:
+#     cpu: 4000m
+#     memory: 4Gi
+#   requests:
+#     cpu: 100m
+#     memory: 512Mi
 
 # -- resources & limits for the agent init containers
 initResources: {}
@@ -760,11 +760,11 @@ ingressController:
     # -- Configure a specific nodePort for insecure HTTP traffic on the shared LB service
     insecureNodePort: ~
     # -- Configure a specific nodePort for secure HTTPS traffic on the shared LB service
-    secureNodePort : ~
+    secureNodePort: ~
     # -- Configure a specific loadBalancerClass on the shared LB service (requires Kubernetes 1.24+)
     loadBalancerClass: ~
     # -- Configure a specific loadBalancerIP on the shared LB service
-    loadBalancerIP : ~
+    loadBalancerIP: ~
     # -- Configure if node port allocation is required for LB service
     # ref: https://kubernetes.io/docs/concepts/services-networking/service/#load-balancer-nodeport-allocation
     allocateLoadBalancerNodePorts: ~
@@ -1222,7 +1222,7 @@ hubble:
       override: ~
       repository: "${HUBBLE_RELAY_REPO}"
       tag: "${CILIUM_VERSION}"
-       # hubble-relay-digest
+      # hubble-relay-digest
       digest: ${HUBBLE_RELAY_DIGEST}
       useDigest: ${USE_DIGESTS}
       pullPolicy: "${PULL_POLICY}"
@@ -1244,9 +1244,9 @@ hubble:
 
     # -- Pod topology spread constraints for hubble-relay
     topologySpreadConstraints: []
-      # - maxSkew: 1
-      #   topologyKey: topology.kubernetes.io/zone
-      #   whenUnsatisfiable: DoNotSchedule
+    #   - maxSkew: 1
+    #     topologyKey: topology.kubernetes.io/zone
+    #     whenUnsatisfiable: DoNotSchedule
 
     # -- Node labels for pod assignment
     # ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
@@ -1351,8 +1351,8 @@ hubble:
         # -- extra IP addresses added to certificate when its auto gen
         extraIpAddresses: []
         # DNS name used by the backend to connect to the relay
-        # This is a simple workaround as the relay certificates are currently hardcoded to 
-        # *.hubble-relay.cilium.io 
+        # This is a simple workaround as the relay certificates are currently hardcoded to
+        # *.hubble-relay.cilium.io
         # See https://github.com/cilium/cilium/pull/28709#discussion_r1371792546
         # For GKE Dataplane V2 this should be set to relay.kube-system.svc.cluster.local
         relayName: "ui.hubble-relay.cilium.io"
@@ -1428,18 +1428,18 @@ hubble:
         # -- When deploying Hubble UI in standalone, with tls enabled for Hubble relay, it is required
         # to provide a volume for mounting the client certificates.
         certsVolume: {}
-          # projected:
-          #   defaultMode: 0400
-          #   sources:
-          #   - secret:
-          #       name: hubble-ui-client-certs
-          #       items:
-          #       - key: tls.crt
-          #         path: client.crt
-          #       - key: tls.key
-          #         path: client.key
-          #       - key: ca.crt
-          #         path: hubble-relay-ca.crt
+        #   projected:
+        #     defaultMode: 0400
+        #     sources:
+        #     - secret:
+        #         name: hubble-ui-client-certs
+        #         items:
+        #         - key: tls.crt
+        #           path: client.crt
+        #         - key: tls.key
+        #           path: client.key
+        #         - key: ca.crt
+        #           path: hubble-relay-ca.crt
 
     # -- Roll out Hubble-ui pods automatically when configmap is updated.
     rollOutPods: false
@@ -1555,9 +1555,9 @@ hubble:
 
     # -- Pod topology spread constraints for hubble-ui
     topologySpreadConstraints: []
-      # - maxSkew: 1
-      #   topologyKey: topology.kubernetes.io/zone
-      #   whenUnsatisfiable: DoNotSchedule
+    #   - maxSkew: 1
+    #     topologyKey: topology.kubernetes.io/zone
+    #     whenUnsatisfiable: DoNotSchedule
 
     # -- Node labels for pod assignment
     # ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
@@ -1645,21 +1645,21 @@ hubble:
         createConfigMap: true
         # ---- Exporters configuration in YAML format.
         content:
-        - name: all
-          fieldMask: []
-          includeFilters: []
-          excludeFilters: []
-          filePath: "/var/run/cilium/hubble/events.log"
-        #- name: "test002"
-        #  filePath: "/var/log/network/flow-log/pa/test002.log"
-        #  fieldMask: ["source.namespace", "source.pod_name", "destination.namespace", "destination.pod_name", "verdict"]
-        #  includeFilters:
-        #  - source_pod: ["default/"]
-        #    event_type:
-        #    - type: 1
-        #  - destination_pod: ["frontend/nginx-975996d4c-7hhgt"]
-        #  excludeFilters: []
-        #  end: "2023-10-09T23:59:59-07:00"
+          - name: all
+            fieldMask: []
+            includeFilters: []
+            excludeFilters: []
+            filePath: "/var/run/cilium/hubble/events.log"
+        #  - name: "test002"
+        #    filePath: "/var/log/network/flow-log/pa/test002.log"
+        #    fieldMask: ["source.namespace", "source.pod_name", "destination.namespace", "destination.pod_name", "verdict"]
+        #    includeFilters:
+        #    - source_pod: ["default/"]
+        #      event_type:
+        #      - type: 1
+        #    - destination_pod: ["frontend/nginx-975996d4c-7hhgt"]
+        #    excludeFilters: []
+        #    end: "2023-10-09T23:59:59-07:00"
 
 # -- Method to use for identity allocation (`crd` or `kvstore`).
 identityAllocationMode: "crd"
@@ -1691,16 +1691,16 @@ ipam:
     clusterPoolIPv6MaskSize: 120
     # -- IP pools to auto-create in multi-pool IPAM mode.
     autoCreateCiliumPodIPPools: {}
-      # default:
-      #   ipv4:
-      #     cidrs:
-      #       - 10.10.0.0/8
-      #     maskSize: 24
-      # other:
-      #   ipv6:
-      #     cidrs:
-      #       - fd00:100::/80
-      #     maskSize: 96
+    #   default:
+    #     ipv4:
+    #       cidrs:
+    #         - 10.10.0.0/8
+    #       maskSize: 24
+    #   other:
+    #     ipv6:
+    #       cidrs:
+    #         - fd00:100::/80
+    #       maskSize: 96
     # -- The maximum burst size when rate limiting access to external APIs.
     # Also known as the token bucket capacity.
     # @default -- `20`
@@ -1724,9 +1724,9 @@ ipMasqAgent:
   enabled: false
 # the config of nonMasqueradeCIDRs
 # config:
-  # nonMasqueradeCIDRs: []
-  # masqLinkLocal: false
-  # masqLinkLocalIPv6: false
+#   nonMasqueradeCIDRs: []
+#   masqLinkLocal: false
+#   masqLinkLocalIPv6: false
 
 # iptablesLockTimeout defines the iptables "--wait" option when invoked from Cilium.
 # iptablesLockTimeout: "5s"
@@ -1740,14 +1740,14 @@ ipv6:
   enabled: false
 
 # -- Configure Kubernetes specific configuration
-k8s: {}
+k8s:
   # -- requireIPv4PodCIDR enables waiting for Kubernetes to provide the PodCIDR
   # range via the Kubernetes node resource
-  # requireIPv4PodCIDR: false
+  requireIPv4PodCIDR: false
 
   # -- requireIPv6PodCIDR enables waiting for Kubernetes to provide the PodCIDR
   # range via the Kubernetes node resource
-  # requireIPv6PodCIDR: false
+  requireIPv6PodCIDR: false
 
 # -- Keep the deprecated selector labels when deploying Cilium DaemonSet.
 keepDeprecatedLabels: false
@@ -2082,12 +2082,12 @@ envoy:
 
   # -- Additional envoy hostPath mounts.
   extraHostPathMounts: []
-    # - name: host-mnt-data
-    #   mountPath: /host/mnt/data
-    #   hostPath: /mnt/data
-    #   hostPathType: Directory
-    #   readOnly: true
-    #   mountPropagation: HostToContainer
+  # - name: host-mnt-data
+  #   mountPath: /host/mnt/data
+  #   hostPath: /mnt/data
+  #   hostPathType: Directory
+  #   readOnly: true
+  #   mountPropagation: HostToContainer
 
   # -- Additional envoy volumes.
   extraVolumes: []
@@ -2125,12 +2125,12 @@ envoy:
   # -- Envoy resource limits & requests
   # ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
   resources: {}
-    # limits:
-    #   cpu: 4000m
-    #   memory: 4Gi
-    # requests:
-    #   cpu: 100m
-    #   memory: 512Mi
+  #   limits:
+  #     cpu: 4000m
+  #     memory: 4Gi
+  #   requests:
+  #     cpu: 100m
+  #     memory: 512Mi
 
   startupProbe:
     # -- failure threshold of startup probe.
@@ -2396,9 +2396,9 @@ etcd:
 
   # -- Pod topology spread constraints for cilium-etcd-operator
   topologySpreadConstraints: []
-    # - maxSkew: 1
-    #   topologyKey: topology.kubernetes.io/zone
-    #   whenUnsatisfiable: DoNotSchedule
+  #   - maxSkew: 1
+  #     topologyKey: topology.kubernetes.io/zone
+  #     whenUnsatisfiable: DoNotSchedule
 
   # -- Node labels for cilium-etcd-operator pod assignment
   # ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
@@ -2431,16 +2431,16 @@ etcd:
   # -- cilium-etcd-operator resource limits & requests
   # ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
   resources: {}
-    # limits:
-    #   cpu: 4000m
-    #   memory: 4Gi
-    # requests:
-    #   cpu: 100m
-    #   memory: 512Mi
+  #   limits:
+  #     cpu: 4000m
+  #     memory: 4Gi
+  #   requests:
+  #     cpu: 100m
+  #     memory: 512Mi
 
   # -- Security context to be added to cilium-etcd-operator pods
   securityContext: {}
-    # runAsUser: 0
+  #   runAsUser: 0
 
   # -- cilium-etcd-operator update strategy
   updateStrategy:
@@ -2517,9 +2517,9 @@ operator:
 
   # -- Pod topology spread constraints for cilium-operator
   topologySpreadConstraints: []
-    # - maxSkew: 1
-    #   topologyKey: topology.kubernetes.io/zone
-    #   whenUnsatisfiable: DoNotSchedule
+  #   - maxSkew: 1
+  #     topologyKey: topology.kubernetes.io/zone
+  #     whenUnsatisfiable: DoNotSchedule
 
   # -- Node labels for cilium-operator pod assignment
   # ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
@@ -2543,12 +2543,12 @@ operator:
 
   # -- Additional cilium-operator hostPath mounts.
   extraHostPathMounts: []
-    # - name: host-mnt-data
-    #   mountPath: /host/mnt/data
-    #   hostPath: /mnt/data
-    #   hostPathType: Directory
-    #   readOnly: true
-    #   mountPropagation: HostToContainer
+  # - name: host-mnt-data
+  #   mountPath: /host/mnt/data
+  #   hostPath: /mnt/data
+  #   hostPathType: Directory
+  #   readOnly: true
+  #   mountPropagation: HostToContainer
 
   # -- Additional cilium-operator volumes.
   extraVolumes: []
@@ -2582,12 +2582,12 @@ operator:
   # -- cilium-operator resource limits & requests
   # ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
   resources: {}
-    # limits:
-    #   cpu: 1000m
-    #   memory: 1Gi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
+  #   limits:
+  #     cpu: 1000m
+  #     memory: 1Gi
+  #   requests:
+  #     cpu: 100m
+  #     memory: 128Mi
 
   # -- Security context to be added to cilium-operator pods
   securityContext: {}
@@ -2756,12 +2756,12 @@ nodeinit:
 
   # -- startup offers way to customize startup nodeinit script (pre and post position)
   startup:
-   preScript: ""
-   postScript: ""
+    preScript: ""
+    postScript: ""
   # -- prestop offers way to customize prestop nodeinit script (pre and post position)
   prestop:
-   preScript: ""
-   postScript: ""
+    preScript: ""
+    postScript: ""
 
 preflight:
   # -- Enable Cilium pre-flight resources (required for upgrade)
@@ -2852,16 +2852,16 @@ preflight:
   # -- preflight resource limits & requests
   # ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
   resources: {}
-    # limits:
-    #   cpu: 4000m
-    #   memory: 4Gi
-    # requests:
-    #   cpu: 100m
-    #   memory: 512Mi
+  #   limits:
+  #     cpu: 4000m
+  #     memory: 4Gi
+  #   requests:
+  #     cpu: 100m
+  #     memory: 512Mi
 
   # -- Security context to be added to preflight pods
   securityContext: {}
-    # runAsUser: 0
+  #   runAsUser: 0
 
   # -- Path to write the `--tofqdns-pre-cache` file to.
   tofqdnsPreCache: ""
@@ -2991,12 +2991,12 @@ clustermesh:
 
       # -- Resource requests and limits for the KVStoreMesh container
       resources: {}
-        # requests:
-        #   cpu: 100m
-        #   memory: 64Mi
-        # limits:
-        #   cpu: 1000m
-        #   memory: 1024M
+      #   requests:
+      #     cpu: 100m
+      #     memory: 64Mi
+      #   limits:
+      #     cpu: 1000m
+      #     memory: 1024M
 
       # -- Additional KVStoreMesh volumeMounts.
       extraVolumeMounts: []
@@ -3082,22 +3082,14 @@ clustermesh:
       # -- Maximum number/percentage of pods that may be made unavailable
       maxUnavailable: 1
 
-    # -- Resource requests and limits for the clustermesh-apiserver container of the clustermesh-apiserver deployment, such as
-    #     resources:
-    #       limits:
-    #         cpu: 1000m
-    #         memory: 1024M
-    #       requests:
-    #         cpu: 100m
-    #         memory: 64Mi
     # -- Resource requests and limits for the clustermesh-apiserver
     resources: {}
-      # requests:
-      #   cpu: 100m
-      #   memory: 64Mi
-      # limits:
-      #   cpu: 1000m
-      #   memory: 1024M
+    #   requests:
+    #     cpu: 100m
+    #     memory: 64Mi
+    #   limits:
+    #     cpu: 1000m
+    #     memory: 1024M
 
     # -- Affinity for clustermesh.apiserver
     affinity:
@@ -3110,9 +3102,9 @@ clustermesh:
 
     # -- Pod topology spread constraints for clustermesh-apiserver
     topologySpreadConstraints: []
-      # - maxSkew: 1
-      #   topologyKey: topology.kubernetes.io/zone
-      #   whenUnsatisfiable: DoNotSchedule
+    #   - maxSkew: 1
+    #     topologyKey: topology.kubernetes.io/zone
+    #     whenUnsatisfiable: DoNotSchedule
 
     # -- Node labels for pod assignment
     # ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
@@ -3224,7 +3216,7 @@ clustermesh:
       kvstoremesh:
         # -- Enables exporting KVStoreMesh metrics in OpenMetrics format.
         enabled: true
-         # -- Configure the port the KVStoreMesh metric server listens on.
+        # -- Configure the port the KVStoreMesh metric server listens on.
         port: 9964
 
       etcd:
@@ -3287,12 +3279,12 @@ cgroup:
     enabled: true
     # -- Init Container Cgroup Automount resource limits & requests
     resources: {}
-      # limits:
-      #   cpu: 100m
-      #   memory: 128Mi
-      # requests:
-      #   cpu: 100m
-      #   memory: 128Mi
+    #   limits:
+    #     cpu: 100m
+    #     memory: 128Mi
+    #   requests:
+    #     cpu: 100m
+    #     memory: 128Mi
   # -- Configure cgroup root where cgroup2 filesystem is mounted on the host (see also: `cgroup.autoMount`)
   hostRoot: /run/cilium/cgroupv2
 
@@ -3347,7 +3339,7 @@ authentication:
   queueSize: 1024
   # -- Buffer size of the channel Cilium uses to receive certificate expiration events from auth handlers.
   rotatedIdentitiesQueueSize: 1024
-    # -- Interval for garbage collection of auth map entries.
+  # -- Interval for garbage collection of auth map entries.
   gcInterval: "5m0s"
   # Configuration for Cilium's service-to-service mutual authentication using TLS handshakes.
   # Note that this is not full mTLS support without also enabling encryption of some form.
