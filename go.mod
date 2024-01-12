@@ -1,6 +1,7 @@
 module github.com/cilium/cilium
 
-go 1.20
+// renovate: datasource=golang-version depName=go
+go 1.21.0
 
 require (
 	github.com/AdaLogics/go-fuzz-headers v0.0.0-20221118232415-3345c89a7c72
